@@ -1,11 +1,13 @@
-const inquirer = require("inquirer");
+// !TODO offload questions to another file to clean up app.js
 
+const inquirer = require("inquirer");
 const Manager = require("./lib/Manager");
 const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-
+const questions = require("./lib/questions")
 const teamArray = [];
+
 // Array of standard user questions
 const standard = [
   {
@@ -27,14 +29,29 @@ const standard = [
     type: "list",
     message: "What is the employee's role?",
     name: "role",
-    choices: ["manager", "engineer", "intern"]
+    choices: ["engineer", "intern"]
   }
 ];
-// Manager question
+// Manager questions
 const managerQuestions = [
   {
     type: "input",
-    message: "What is the employee's office number?",
+    message: "What is the team manager's name?",
+    name: "name"
+  },
+  {
+    type: "input",
+    message: "What is the team manager's ID number?",
+    name: "id"
+  },
+  {
+    type: "input",
+    message: "What is the team manager's email address?",
+    name: "email"
+  },
+  {
+    type: "input",
+    message: "What is the team manager's office number?",
     name: "officeNumber"
   }
 ];
@@ -64,15 +81,24 @@ const addMore = [
   }
 ];
 
+async function managerInfo() {
+  inquirer.prompt(managerQuestions).then(function(res) {
+    const newManager = new Manager(
+      res.name,
+      res.id,
+      res.email,
+      res.officeNumber
+    );
+    console.log('Great, we will now begin adding team members to your team.');
+    teamArray.push(newManager);
+    getInfo();
+  });
+}
+
 async function getInfo() {
   inquirer.prompt(standard).then(function(res) {
     const answers = res;
     switch (res.role) {
-      case "manager":
-        inquirer.prompt(managerQuestions).then(function(res) {
-          creation(answers, res);
-        });
-        return;
       case "engineer":
         inquirer.prompt(engineerQuestions).then(function(res) {
           creation(answers, res);
@@ -90,30 +116,16 @@ async function getInfo() {
 const creation = (generic, specific) => {
   try {
     switch (generic.role) {
-      case "manager":
-        // prettier-ignore
-        const newManager = new Manager(generic.name, generic.id, generic.email, specific.officeNumber);
-        // console.log(newManager);
-        teamArray.push(newManager);
-        console.log(teamArray);
-        inquirer.prompt(addMore).then(function(res) {
-          if (res.continue === "Yes") {
-            getInfo();
-          } else if (res.continue === "No"){
-            console.log("Great, we'll start generating your file.");
-          }
-        });
-        return;
       case "engineer":
         // prettier-ignore
         const newEngineer = new Engineer(generic.name, generic.id, generic.email, specific.github);
         teamArray.push(newEngineer);
-        console.log(teamArray);
         inquirer.prompt(addMore).then(function(res) {
           if (res.continue === "Yes") {
             getInfo();
-          } else if (res.continue === "No"){
+          } else if (res.continue === "No") {
             console.log("Great, we'll start generating your file.");
+            // !!TODO add function here to generate html
           }
         });
         return;
@@ -121,12 +133,13 @@ const creation = (generic, specific) => {
         // prettier-ignore
         const newIntern = new Intern(generic.name, generic.id, generic.email, specific.school);
         teamArray.push(newIntern);
-        console.log(teamArray);
         inquirer.prompt(addMore).then(function(res) {
           if (res.continue === "Yes") {
             getInfo();
-          } else if (res.continue === "No"){
+          } else if (res.continue === "No") {
             console.log("Great, we'll start generating your file.");
+            console.log(teamArray);
+            // !!TODO add function here to generate html
           }
           return;
         });
@@ -136,4 +149,5 @@ const creation = (generic, specific) => {
   }
 };
 
-getInfo();
+managerInfo();
+// ! function here that loops through each item in the teamArray object and generates HTML based on user's role
