@@ -5,7 +5,7 @@ const Manager = require("./lib/Manager");
 const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const questions = require("./lib/questions")
+const questions = require("./lib/questions");
 const teamArray = [];
 
 // Array of standard user questions
@@ -89,7 +89,7 @@ async function managerInfo() {
       res.email,
       res.officeNumber
     );
-    console.log('Great, we will now begin adding team members to your team.');
+    console.log("Great, we will now begin adding team members to your team.");
     teamArray.push(newManager);
     getInfo();
   });
@@ -114,40 +114,62 @@ async function getInfo() {
 }
 
 const creation = (generic, specific) => {
+  console.log(generic);
   try {
     switch (generic.role) {
       case "engineer":
         // prettier-ignore
-        const newEngineer = new Engineer(generic.name, generic.id, generic.email, specific.github);
+        const newEngineer = new Engineer(generic.name, generic.id, generic.email, generic.role, specific.github);
+        console.log(newEngineer);
         teamArray.push(newEngineer);
         inquirer.prompt(addMore).then(function(res) {
           if (res.continue === "Yes") {
             getInfo();
           } else if (res.continue === "No") {
             console.log("Great, we'll start generating your file.");
+            createHTML(teamArray);
             // !!TODO add function here to generate html
           }
         });
         return;
       case "intern":
         // prettier-ignore
-        const newIntern = new Intern(generic.name, generic.id, generic.email, specific.school);
+        const newIntern = new Intern(generic.name, generic.id, generic.email, generic.role, specific.school);
+        console.log(newIntern);
         teamArray.push(newIntern);
         inquirer.prompt(addMore).then(function(res) {
           if (res.continue === "Yes") {
             getInfo();
           } else if (res.continue === "No") {
             console.log("Great, we'll start generating your file.");
-            console.log(teamArray);
+            createHTML(teamArray);
             // !!TODO add function here to generate html
           }
           return;
         });
-    }
+    }    
   } catch (err) {
     console.log(err);
   }
 };
 
+const createHTML = (teamArray) => {
+  // console.log(teamArray);
+  teamArray.forEach(element => {
+    switch (element.role) {
+      case "engineer":
+        console.log("this works");
+        return;
+      case "intern":
+        console.log("this works too");
+        return;
+      default:
+        console.log("this works three");
+        return;
+    }
+  });
+};
+
+// const createManager = manager => {};
 managerInfo();
 // ! function here that loops through each item in the teamArray object and generates HTML based on user's role
