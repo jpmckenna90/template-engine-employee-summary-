@@ -11,9 +11,27 @@ const HTML = (manager, employees) => {
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
-    <title>Document</title>
+    <title>Team Profile Generator</title>
   </head>
+  <style>
+      .jumbotron {
+        background-color: darkblue;
+        color: white;
+      }
+
+      .row{
+        margin-top: 2%;
+      }
+
+      .card{
+        height:100%;
+      }
+
+    </style>
   <body>
+  <div class="jumbotron text-center">
+  <h1>My Team</h1>
+</div>
     <div class="container">
       <div class="row" id="managerrow">
       ${manager}
@@ -26,47 +44,46 @@ const HTML = (manager, employees) => {
   <script
   src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
   integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
-  crossorigin="anonymous">
-  </script>
+  crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/8d13be2a88.js" crossorigin="anonymous"></script> 
 </html>`;
 };
 
-const managerHTML = (manager) => {
-  return `<div class="col-3"><div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
+const managerHTML = manager => {
+  return `<div class="col-12"><div class="card mx-auto" style="width: 18rem;">
   <div class="card-body">
-  <h1>${manager.name}</h1>
+  <i class="fas fa-mug-hot"></i><h1>${manager.name}</h1>
   <h3>${manager.role}</h3>
     <h6>Email: ${manager.email}</h6>
     <h6>ID: ${manager.id}</h6>
     <h6>Office Number: ${manager.officeNumber}</h6>
   </div>
-</div></div>`
-}
+</div></div>`;
+};
 
-const engiHTML = (engineer) => {
+const engiHTML = engineer => {
   return `<div class="col-3"><div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
   <div class="card-body">
-  <h1>${engineer.name}</h1>
+  <i class="fas fa-code"></i><h1>${engineer.name}</h1>
     <h3 class="card-title">${engineer.role}</h3>
     <h6>Email: ${engineer.email}</h6>
     <h6>ID: ${engineer.id}</h6>
     <a href="https://www.github.com/${engineer.github}" class="btn btn-primary">Github</a>
   </div>
-</div></div>`
-}
+</div></div>`;
+};
 
-const internHTML = (intern) => {
+const internHTML = intern => {
   return `<div class="col-3"><div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">${intern.name}</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+  <i class="fas fa-book-open"></i><h1 class="card-title">${intern.name}</h1>
+    <h3 class="card-title">${intern.role}</h3>
+    <h6>Email: ${intern.email}</h6>
+    <h6>ID: ${intern.id}</h6>
+    <h6>School: ${intern.school}</h6>
   </div>
-</div></div>`
-}
+</div></div>`;
+};
 
 exports.HTML = HTML;
 exports.engiHTML = engiHTML;
