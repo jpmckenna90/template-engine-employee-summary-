@@ -1,4 +1,4 @@
-const HTML = () => {
+const HTML = (manager, employees) => {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,9 +16,10 @@ const HTML = () => {
   <body>
     <div class="container">
       <div class="row" id="managerrow">
+      ${manager}
       </div>
       <div class="row" id="staffrow">
-        
+        ${employees}
       </div>
     </div>
   </body>
@@ -29,6 +30,7 @@ const HTML = () => {
   </script>
 </html>`;
 };
+
 const managerHTML = (manager) => {
   return `<div class="col-3"><div class="card" style="width: 18rem;">
   <img class="card-img-top" src="..." alt="Card image cap">
@@ -41,7 +43,6 @@ const managerHTML = (manager) => {
   </div>
 </div></div>`
 }
-
 
 const engiHTML = (engineer) => {
   return `<div class="col-3"><div class="card" style="width: 18rem;">

@@ -12,7 +12,8 @@ const engiHTML = require("./generateHTML.js");
 const internHTML = require("./generateHTML");
 const managerHTML = require("./generateHTML.js");
 const teamArray = [];
-let htmlstring = "";
+let empString = "";
+let manString = "";
 
 const preString = `<!DOCTYPE html>
 <html lang="en">
@@ -123,7 +124,7 @@ async function managerInfo() {
       res.name,
       res.id,
       res.email,
-      "Manager",
+      "manager",
       res.officeNumber
     );
     console.log("Great, we will now begin adding team members to your team.");
@@ -191,18 +192,25 @@ const createHTML = teamArray => {
   teamArray.forEach(employee => {
     switch (employee.role) {
       case "manager":
-        htmlstring += managerHTML.managerHTML(employee);
+        // htmlstring += managerHTML.managerHTML(employee);
+        manString += managerHTML.managerHTML(employee);
+        return;
       case "engineer":
-        htmlstring += engiHTML.engiHTML(employee);
+        empString += engiHTML.engiHTML(employee);
+        // htmlstring += engiHTML.engiHTML(employee);
         return;
       case "intern":
-        htmlstring += internHTML.internHTML(employee);
+        empString += internHTML.internHTML(employee);
+        // htmlstring += internHTML.internHTML(employee);
         return;
     }
   });
 
-  const myFile = preString + htmlstring + postString;
+  const myFile = newHTML.HTML(manString, empString);
+
   fs.writeFile("team.html", myFile, err => {
+    // console.log(teamArray);
+    console.log(myFile);
     if (err) {
       console.log(err);
     }
