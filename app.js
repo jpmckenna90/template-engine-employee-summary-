@@ -10,10 +10,39 @@ const questions = require("./lib/questions");
 const newHTML = require("./generateHTML.js");
 const engiHTML = require("./generateHTML.js");
 const internHTML = require("./generateHTML");
-// var jsdom = require('jsdom');
+const managerHTML = require("./generateHTML.js");
 const teamArray = [];
 let htmlstring = "";
-// $ = require('jquery')(new jsdom.JSDOM().window);
+
+const preString = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row" id="managerrow">
+      </div>
+      <div class="row" id="staffrow">`;
+
+const postString = `</div>
+</div>
+</body>
+<script
+src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+crossorigin="anonymous">
+</script>
+</html>`;
 
 // Array of standard user questions
 const standard = [
@@ -94,6 +123,7 @@ async function managerInfo() {
       res.name,
       res.id,
       res.email,
+      "Manager",
       res.officeNumber
     );
     console.log("Great, we will now begin adding team members to your team.");
@@ -134,7 +164,6 @@ const creation = (generic, specific) => {
           } else if (res.continue === "No") {
             console.log("Great, we'll start generating your file.");
             createHTML(teamArray);
-            // !!TODO add function here to generate html
           }
         });
         return;
@@ -149,44 +178,36 @@ const creation = (generic, specific) => {
           } else if (res.continue === "No") {
             console.log("Great, we'll start generating your file.");
             createHTML(teamArray);
-            // !!TODO add function here to generate html
           }
           return;
         });
-    }    
+    }
   } catch (err) {
     console.log(err);
   }
 };
 
-const createHTML = (teamArray) => {
-
-  const myFile = newHTML.HTML();
-      fs.writeFile("team.html", myFile, err => {
-        if (err) {
-          console.log(err);
-        }
-      });
-
-  // console.log(teamArray);
+const createHTML = teamArray => {
   teamArray.forEach(employee => {
     switch (employee.role) {
+      case "manager":
+        htmlstring += managerHTML.managerHTML(employee);
       case "engineer":
         htmlstring += engiHTML.engiHTML(employee);
         return;
       case "intern":
         htmlstring += internHTML.internHTML(employee);
         return;
-      default:
-        console.log("manager");
-        return;
     }
   });
 
-  console.log(htmlstring);
-
+  const myFile = preString + htmlstring + postString;
+  fs.writeFile("team.html", myFile, err => {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
-// const createManager = manager => {};
 managerInfo();
-// ! function here that loops through each item in the teamArray object and generates HTML based on user's role
+

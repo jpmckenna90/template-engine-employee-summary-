@@ -29,6 +29,19 @@ const HTML = () => {
   </script>
 </html>`;
 };
+const managerHTML = (manager) => {
+  return `<div class="col-3"><div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+  <h1>${manager.name}</h1>
+  <h3>${manager.role}</h3>
+    <h6>Email: ${manager.email}</h6>
+    <h6>ID: ${manager.id}</h6>
+    <h6>Office Number: ${manager.officeNumber}</h6>
+  </div>
+</div></div>`
+}
+
 
 const engiHTML = (engineer) => {
   return `<div class="col-3"><div class="card" style="width: 18rem;">
@@ -57,3 +70,4 @@ const internHTML = (intern) => {
 exports.HTML = HTML;
 exports.engiHTML = engiHTML;
 exports.internHTML = internHTML;
+exports.managerHTML = managerHTML;
