@@ -1,12 +1,19 @@
 // !TODO offload questions to another file to clean up app.js
 
 const inquirer = require("inquirer");
+const fs = require("fs");
 const Manager = require("./lib/Manager");
 const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const questions = require("./lib/questions");
+const newHTML = require("./generateHTML.js");
+const engiHTML = require("./generateHTML.js");
+const internHTML = require("./generateHTML");
+// var jsdom = require('jsdom');
 const teamArray = [];
+let htmlstring = "";
+// $ = require('jquery')(new jsdom.JSDOM().window);
 
 // Array of standard user questions
 const standard = [
@@ -120,7 +127,6 @@ const creation = (generic, specific) => {
       case "engineer":
         // prettier-ignore
         const newEngineer = new Engineer(generic.name, generic.id, generic.email, generic.role, specific.github);
-        console.log(newEngineer);
         teamArray.push(newEngineer);
         inquirer.prompt(addMore).then(function(res) {
           if (res.continue === "Yes") {
@@ -154,20 +160,31 @@ const creation = (generic, specific) => {
 };
 
 const createHTML = (teamArray) => {
+
+  const myFile = newHTML.HTML();
+      fs.writeFile("team.html", myFile, err => {
+        if (err) {
+          console.log(err);
+        }
+      });
+
   // console.log(teamArray);
-  teamArray.forEach(element => {
-    switch (element.role) {
+  teamArray.forEach(employee => {
+    switch (employee.role) {
       case "engineer":
-        console.log("this works");
+        htmlstring += engiHTML.engiHTML(employee);
         return;
       case "intern":
-        console.log("this works too");
+        htmlstring += internHTML.internHTML(employee);
         return;
       default:
-        console.log("this works three");
+        console.log("manager");
         return;
     }
   });
+
+  console.log(htmlstring);
+
 };
 
 // const createManager = manager => {};
