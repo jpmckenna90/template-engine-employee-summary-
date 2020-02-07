@@ -10,3 +10,5 @@
 - Javascript (Node.js), HTML5, CSS, Bootstrap
 
 ## Demo
+
+<img src="Team Demo.gif">
