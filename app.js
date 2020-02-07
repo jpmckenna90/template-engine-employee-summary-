@@ -52,7 +52,6 @@ async function getInfo() {
 
 // Function receives answers of generic team questions and specific role-based questions and creates objects
 const creation = (generic, specific) => {
-  console.log(generic);
   try {
     switch (generic.role) {
       case "engineer":
@@ -71,7 +70,6 @@ const creation = (generic, specific) => {
       case "intern":
         // prettier-ignore
         const newIntern = new Intern(generic.name, generic.id, generic.email, generic.role, specific.school);
-        console.log(newIntern);
         teamArray.push(newIntern);
         inquirer.prompt(questions.addMore).then(function(res) {
           if (res.continue === "Yes") {
@@ -107,7 +105,6 @@ const createHTML = teamArray => {
   const myFile = newHTML.HTML(manString, empString);
 
   fs.writeFile("team.html", myFile, err => {
-    console.log(myFile);
     if (err) {
       console.log(err);
     }
